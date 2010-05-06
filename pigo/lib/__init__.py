@@ -38,10 +38,7 @@ except ImportError, ie:
             raise Exception("No viable backend. Tried sdl, pygame, pyglet.")
         
 if module_name == 'sdl':
-    from ModuleSDL import Font 
-    from ModuleSDL import TestCase
+    from ModuleSDL import *
             
 elif module_name == 'pygame':
-    from ModulePygame import Font
-    from ModulePygame import TestCase
-    from ModulePygame import Initialise, ShowCursor, SetAppIcon, SetWindowTitle, ListModes, SetVideoMode
+    from ModulePygame import *

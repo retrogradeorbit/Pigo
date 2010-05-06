@@ -55,10 +55,66 @@ class TestCase(object):
         
         
 # base library functions
-def Initialise():
+def Init():
     pygame.init()
     pygame.font.init()
+	
+def Quit():
+	pygame.quit()
     
+def Flip():
+	pygame.display.flip()
+	
+def Poll():
+	event = pygame.event.poll()
+	return None if event.type == pygame.NOEVENT else event
+
+def iskey(event,key):
+	print event.key
+	return event.key == key
+		
+def isquit(event):
+	return event.type == pygame.QUIT
+
+KEY_KP_PLUS = pygame.K_KP_PLUS
+KEY_PLUS = pygame.K_KP_PLUS
+KEY_KP_MINUS = pygame.K_KP_MINUS
+KEY_MINUS = pygame.K_MINUS
+KEY_ESCAPE = pygame.K_ESCAPE
+KEY_EQUALS = pygame.K_EQUALS
+KEY_F11 = pygame.K_F11
+
+KEY_a = pygame.K_a
+KEY_b = pygame.K_b
+KEY_c = pygame.K_c
+KEY_d = pygame.K_d
+KEY_e = pygame.K_e
+KEY_f = pygame.K_f
+KEY_g = pygame.K_g
+KEY_h = pygame.K_h
+KEY_i = pygame.K_i
+KEY_j = pygame.K_j
+KEY_k = pygame.K_k
+KEY_l = pygame.K_l
+KEY_m = pygame.K_m
+KEY_n = pygame.K_n
+KEY_o = pygame.K_o
+KEY_p = pygame.K_p
+KEY_q = pygame.K_q
+KEY_r = pygame.K_r
+KEY_s = pygame.K_s
+KEY_t = pygame.K_t
+KEY_u = pygame.K_u
+KEY_v = pygame.K_v
+KEY_w = pygame.K_w
+KEY_x = pygame.K_x
+KEY_y = pygame.K_y
+KEY_z = pygame.K_z
+
+
+KEYTYPE = pygame.KEYDOWN
+
+	
 def ShowCursor(boolean=True):
     pygame.mouse.set_visible(boolean)
     
@@ -68,7 +124,7 @@ def SetAppIcon(filename):
     
 def SetWindowTitle(title, short=None):
     pygame.display.set_caption(title, short or title)
-    
+	
 def ListModes(depth=0):
     return pygame.display.list_modes(depth,pygame.FULLSCREEN|pygame.HWSURFACE)
     
