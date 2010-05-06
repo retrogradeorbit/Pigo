@@ -1,39 +1,8 @@
 Proposed Features and Functionality
 ===================================
 
-In this document we will layout how we propose Pigo will (should) work.
+In this document we will layout how we propose bits of Pigo will (should) work.
 
-Creating an Application
------------------------
-
-Create an application by deriving your application class from pigo.App::
-    
-	from pigo import App
-
-	class MyApp(App):
-		pass
-
-	MyApp.startup()
-	
-Pressing the 'q' key or 'escape' will quit the programme. The plus and minus keys increase and decrease the window size or screen
-resolution. The 'f' key or 'f11' toggles between fullscreen and windowed mode.
-    
-Making an Application Run Fullscreen
-------------------------------------
-
-Setting the class variable Fullscreen to True makes the application start up in fullscreen::
-    
-    from pigo import App, bootstrap
-    
-    class MyApp(App):
-        fullscreen = True
-        
-    MyApp.startup()
-    
-.. note::
-    
-    This does not prevent the user from *switching back* into window mode. That requires changing the default behavoir. It just makes the start up state fullscreen.
-    
 Setting Up Graphics Layers
 --------------------------
 
