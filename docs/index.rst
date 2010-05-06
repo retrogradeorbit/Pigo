@@ -22,6 +22,17 @@ Installation
 
 Install from source.
 
+Introduction
+============
+
+There are many game development frameworks, and many just for Python, and in the opinion of this author, they *all* stink. They are all going about it wrong.
+Why after all these years, all this modernisation of code design are we still building complex state machines by hand and calling update() on every object for
+every frame. Why after all these years is making a simple clone of pacman or space invaders so ridiculously complex?
+
+Pigo is a high level framework that attempts to fix this horrid state of affairs. The approach is that you subclass built in modules and override certain methods to get where you want to go.
+Nothing is stopping you going low level, but the aim is to code your game at a more commanding level, and leave all the micro management and game algorithms to
+library.
+
 Examples
 ========
 

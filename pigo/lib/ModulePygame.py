@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import pygame
+
+from PigoFont import PigoFont
+
 class Font(pygame.font.Font, PigoFont):
     def __init__(self, filename, size):
         pygame.font.Font.__init__(self,filename,size)
