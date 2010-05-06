@@ -43,7 +43,7 @@ class GfxEngine:
             def __repr__(self):
                 return "<GfxEngine::box w=%d h=%d>"%(self.w,self.h)
         
-        self.allowedmodes=[]
+        self.modes=[]
         for rect in reversed(pigo.lib.ListModes()):
             r=box()
             r.w=rect[0]
@@ -51,17 +51,14 @@ class GfxEngine:
             self.allowedmodes.append(r)
             
         #self.allowedmodes=SDL_ListModes(None, SDL_FULLSCREEN|SDL_HWSURFACE)[::-1]		# [::-1] = from lowest res mode to highest res mode
-        return self.allowedmodes
+        return self.modes
     
-    def depGetModes(self):
-        return self.allowedmodes
-    
-    def Initialise(self):
+    def Init(self):
         """Initialise the underlying libraries."""
         if self._init:
             return
             
-        pigo.lib.Initialise()
+        pigo.lib.Init()
         pigo.lib.ShowCursor(False)
         self._init = True
         
@@ -73,7 +70,7 @@ class GfxEngine:
         icon 		the Application and windows icon graphic
         mode 		the index for the ListModes() of the starting resolution. 0 is maximum resolution
         """
-        self.Initialise()
+        self.Init()
         self.ListModes()
         
         pigo.lib.SetWindowTitle(title)
@@ -90,43 +87,39 @@ class GfxEngine:
         
     def CloseDisplay(self):
         """Close the window or screen and restore the Desktop"""
-        assert(self.sdlinit)
-        SDL_Quit()
-        self.sdlinit=False
-        
-        TTF_Quit()
-        self.sdlttf=False
-        
+        assert(self._init)
+        pigo.lib.Quit()
+        self._init = False
         
     def ToggleFullScreen(self):
         assert(self.sdlinit)
         SDL_WM_ToggleFullScreen(self.screen)
-        self.fullscreen=not self.fullscreen
+        self.fullscreen = not self.fullscreen
 
     def ResolutionLower(self):
-        assert(self.sdlinit)
+        assert(self._init)
         if self.screenmode==0:
             return
-        self.ChangeMode(self.screenmode-1)
+        self.ChangeMode(self.screenmode - 1)
         
     def ResolutionHigher(self):
-        assert(self.sdlinit)
-        if self.screenmode==len(self.allowedmodes)-1:
+        assert(self._init)
+        if self.screenmode==len(self.modes)-1:
             return
         self.ChangeMode(self.screenmode+1)
         
     def ChangeMode(self,modenum):
-        print "ChangeMode: modenum=",modenum,"w=",self.allowedmodes[modenum].w,"h=",self.allowedmodes[modenum].h
-        self.screenmode=modenum
-        self.ChangeResolution(self.allowedmodes[modenum].w, self.allowedmodes[modenum].h)
+        print "ChangeMode: modenum=",modenum,"w=",self.modes[modenum].w,"h=",self.modes[modenum].h
+        self.screenmode = modenum
+        self.ChangeResolution( self.modes[modenum].w, self.modes[modenum].h )
         
     def ChangeResolution(self, width, height):
-        assert(self.sdlinit)
-        SDL_FreeSurface(self.screen)
-        if self.fullscreen:
-            self.screen = SDL_SetVideoMode(width,height, 24, SDL_OPENGL|SDL_FULLSCREEN)
-        else:
-            self.screen = SDL_SetVideoMode(width,height, 24, SDL_OPENGL)
+        assert(self._init)
+        #SDL_FreeSurface(self.screen)
+        #if self.fullscreen:
+        #    self.screen = SDL_SetVideoMode(width,height, 24, SDL_OPENGL|SDL_FULLSCREEN)
+        #else:
+        #    self.screen = SDL_SetVideoMode(width,height, 24, SDL_OPENGL)
             
         assert(self.screen != None)
         
@@ -134,25 +127,25 @@ class GfxEngine:
         """Set the resolution to the closest allowed matching resolution"""
         
         # calculate a match score for the widths
-        scores=[abs(width-mode.w) for mode in self.allowedmodes]
+        scores = [abs(width-mode.w) for mode in self.modes]
         
         # get a list of the modenumbers that have the lowest match score
-        lowscore=min(scores)
-        modenums=[index for index in range(len(scores)) if scores[index]==lowscore]
+        lowscore = min(scores)
+        modenums = [index for index in range(len(scores)) if scores[index]==lowscore]
         
         # now for each of these modenums find the height scores
-        hscores=[abs(height-self.allowedmodes[mode].h) for mode in modenums]
+        hscores = [abs(height-self.modes[mode].h) for mode in modenums]
         
-        self.screenmode=modenums[hscores.index(min(hscores))]
-        self.ChangeResolution(self.allowedmodes[self.screenmode].w, self.allowedmodes[self.screenmode].h)
+        self.screenmode = modenums[ hscores.index( min(hscores) ) ]
+        self.ChangeResolution( self.modes[self.screenmode].w, self.modes[self.screenmode].h )
         
 
     def SetupGL(self):
         """At the moment we assume the pixels are always square, which is probably not true.
         TODO: somehow use the monitors aspect ratio
         """
-        print "begin frame",self.allowedmodes
-        width, height = self.allowedmodes[self.screenmode].w,self.allowedmodes[self.screenmode].h
+        print "begin frame",self.modes
+        width, height = self.modes[self.screenmode].w,self.modes[self.screenmode].h
         print "S",self.screenmode,"W",width,"H",height	
         glViewport(0,0,width-1,height-1)
         glMatrixMode(GL_PROJECTION)
@@ -449,7 +442,6 @@ class GfxEngine:
         glDeleteTextures(texture)
         
     def DebugInfo(self):
-        return
         """ Display OpenGL driver info. """
         print "OpenGL driver info"
         print "=================="
@@ -478,5 +470,4 @@ class GfxEngine:
         print "OpenGL driver extensions"
         print "========================"
         print glGetString(GL_EXTENSIONS)
-
         print
