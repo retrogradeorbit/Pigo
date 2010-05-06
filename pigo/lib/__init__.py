@@ -44,3 +44,4 @@ if module_name == 'sdl':
 elif module_name == 'pygame':
     from ModulePygame import Font
     from ModulePygame import TestCase
+    from ModulePygame import Initialise, ShowCursor, SetAppIcon, SetWindowTitle, ListModes, SetVideoMode

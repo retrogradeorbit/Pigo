@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # base imports
 import os
@@ -6,17 +7,9 @@ import os
 # requires pyopengl
 from OpenGL.GL import *
 
-# requires sdl-ctypes (pygame-ctypes)
-from SDL import *
-from SDL.image import *
-from SDL.ttf import *
+import pigo.lib
 
 from TextureEngine import *
-
-#from Pigo import *
-#pigo=Pigo()
-
-#from lib import agl
 
 # defaults
 defaultIconPath=os.path.join(os.path.dirname(__file__),"pigo.png")
@@ -24,8 +17,7 @@ defaultIconPath=os.path.join(os.path.dirname(__file__),"pigo.png")
 class GfxEngine:
     def __init__(self):
         # is our sdl initialised?
-        self.sdlinit=False
-        self.sdlfont=False
+        self._init=False
         
         self.allowedmodes=[]
         self.screenmode=0
@@ -37,12 +29,12 @@ class GfxEngine:
         self._cached_quads={}
         
     def __del__(self):
-        if self.sdlinit:
+        if self._init:
             self.CloseDisplay()
         
     def ListModes(self):
         """sets an internal list of SDL_Rects"""
-        assert(self.sdlinit)
+        assert(self._init)
         
         class box(object):
             w=0
@@ -52,10 +44,10 @@ class GfxEngine:
                 return "<GfxEngine::box w=%d h=%d>"%(self.w,self.h)
         
         self.allowedmodes=[]
-        for rect in reversed(SDL_ListModes(None, SDL_FULLSCREEN|SDL_HWSURFACE)):
+        for rect in reversed(pigo.lib.ListModes()):
             r=box()
-            r.w=rect.w
-            r.h=rect.h
+            r.w=rect[0]
+            r.h=rect[1]
             self.allowedmodes.append(r)
             
         #self.allowedmodes=SDL_ListModes(None, SDL_FULLSCREEN|SDL_HWSURFACE)[::-1]		# [::-1] = from lowest res mode to highest res mode
@@ -63,25 +55,17 @@ class GfxEngine:
     
     def depGetModes(self):
         return self.allowedmodes
-            
-    def InitVideo(self):
-        if self.sdlinit:
+    
+    def Initialise(self):
+        """Initialise the underlying libraries."""
+        if self._init:
             return
+            
+        pigo.lib.Initialise()
+        pigo.lib.ShowCursor(False)
+        self._init = True
         
-        if SDL_Init(SDL_INIT_VIDEO) < 0:
-            print "Unable to init SDL: %s\n", SDL_GetError()
-            sys.exit(1)
-        self.sdlinit=True
-        
-        if TTF_Init()<0:
-            print "Unable to init TTF: %s\n", SDL_GetError()
-        self.sdlfont=True
-        
-        SDL_ShowCursor(0)
-        
-        self.DebugInfo()
-        
-    def OpenDisplay(self, title="PiGo",fullscreen=True,icon=None,mode=0):
+    def OpenDisplay(self, title="PiGo",fullscreen=False,icon=None,mode=0):
         """Open the screen or window.
         
         title 		the Window title
@@ -89,30 +73,20 @@ class GfxEngine:
         icon 		the Application and windows icon graphic
         mode 		the index for the ListModes() of the starting resolution. 0 is maximum resolution
         """
-        self.InitVideo()
-        
+        self.Initialise()
         self.ListModes()
         
-        SDL_WM_SetCaption(title,title)
-
+        pigo.lib.SetWindowTitle(title)
+        
         # use the default icon if need be
         icon=defaultIconPath if icon==None else icon
-        
-        SDL_WM_SetIcon(IMG_Load(icon), None)
+        pigo.lib.SetAppIcon(icon)
         
         self.screenmode=mode
-        if fullscreen:
-            self.screen = SDL_SetVideoMode(self.allowedmodes[self.screenmode].w, self.allowedmodes[self.screenmode].h, 24, SDL.SDL_OPENGL|SDL.SDL_FULLSCREEN)
-        else:
-            self.screen = SDL_SetVideoMode(self.allowedmodes[self.screenmode].w, self.allowedmodes[self.screenmode].h, 24, SDL.SDL_OPENGL)
+        self.screen = pigo.lib.SetVideoMode(self.allowedmodes[self.screenmode].w, self.allowedmodes[self.screenmode].h, 24, fullscreen)
         assert(self.screen != None)
         
         self.fullscreen=fullscreen
-        
-        # on OSX Leopard, enables sync to vsync. UPDATE, no it doesn't
-        SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1)
-        
-        self.DebugInfo()
         
     def CloseDisplay(self):
         """Close the window or screen and restore the Desktop"""

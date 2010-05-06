@@ -53,3 +53,25 @@ class TestCase(object):
         pygame.quit()
         
         
+        
+# base library functions
+def Initialise():
+    pygame.init()
+    pygame.font.init()
+    
+def ShowCursor(boolean=True):
+    pygame.mouse.set_visible(boolean)
+    
+def SetAppIcon(filename):
+    surf = pygame.image.load(filename)
+    pygame.display.set_icon(surf)
+    
+def SetWindowTitle(title, short=None):
+    pygame.display.set_caption(title, short or title)
+    
+def ListModes(depth=0):
+    return pygame.display.list_modes(depth,pygame.FULLSCREEN|pygame.HWSURFACE)
+    
+def SetVideoMode(w,h,depth=24,fullscreen=False):
+    return pygame.display.set_mode( (w,h), pygame.FULLSCREEN|pygame.OPENGL if fullscreen else pygame.OPENGL, depth)
+    
