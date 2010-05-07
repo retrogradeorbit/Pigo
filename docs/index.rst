@@ -16,7 +16,7 @@ apon that over time. Writing games with pigo involves overriding the methods of 
 and managing the execution of tasklets. Tasklets can drive the entire game forward in a very graceful and implicitly
 stateful way.
 
-Pigo is the game framework I would have loved to had as a kid. I remember BASIC's on various 8-bit platforms and owned Blizzard Basic
+Pigo is the game framework I would have loved to have had as a kid. I remember BASIC's on various 8-bit platforms and owned Blizzard Basic
 and AMOS for the Amiga. What I want Pigo to be is the ultimate version of that for home game development. A modern interpretation.
 Fully utilising the hardware, but in an oldschool way. Use a modern language like stackless python to bring tools like closures, coroutines
 and microthreads.
