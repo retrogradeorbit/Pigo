@@ -11,6 +11,16 @@ Pigo is a high level game creation framework written in stackless python tailore
 It is not a low level library like pygame or pyglet, although those types of operation can be done with pigo.
 Instead think of it as a high level object oriented description where you say what you want, not how to do it.
 
+Pigo is designed for rapid prototyping and gamejam situations and intended to be a solid platform for building 
+apon that over time. Writing games with pigo involves overriding the methods of pigo objects and triggering
+and managing the execution of tasklets. Tasklets can drive the entire game forward in a very graceful and implicitly
+stateful way.
+
+Pigo is the game framework I would have loved to had as a kid. I remember BASIC's on various 8-bit platforms and owned Blizzard Basic
+and AMOS for the Amiga. What I want Pigo to be is the ultimate version of that for home game development. A modern interpretation.
+Fully utilising the hardware, but in an oldschool way. Use a modern language like stackless python to bring tools like closures, coroutines
+and microthreads.
+
 Contents:
 
 .. toctree::
@@ -22,17 +32,6 @@ Installation
 ============
 
 Install from source.
-
-Introduction
-============
-
-There are many game development frameworks, and many just for Python, and in the opinion of this author, they *all* stink. They are all going about it wrong.
-Why after all these years, all this modernisation of code design are we still building complex state machines by hand and calling update() on every object for
-every frame. Why after all these years is making a simple clone of pacman or space invaders so ridiculously complex?
-
-Pigo is a high level framework that attempts to fix this horrid state of affairs. The approach is that you subclass built in modules and override certain methods to get where you want to go.
-Nothing is stopping you going low level, but the aim is to code your game at a more commanding level, and leave all the micro management and game algorithms to
-library.
 
 Examples
 ========
