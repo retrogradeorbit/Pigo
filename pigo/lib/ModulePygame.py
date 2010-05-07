@@ -125,8 +125,8 @@ def SetWindowTitle(title, short=None):
     pygame.display.set_caption(title, short or title)
 	
 def ListModes(depth=0):
-    return pygame.display.list_modes(depth,pygame.FULLSCREEN|pygame.HWSURFACE)
+    return pygame.display.list_modes(depth,pygame.FULLSCREEN|pygame.OPENGL|pygame.HWSURFACE|pygame.DOUBLEBUF)
     
 def SetVideoMode(w,h,depth=24,fullscreen=False):
-    return pygame.display.set_mode( (w,h), pygame.FULLSCREEN|pygame.OPENGL if fullscreen else pygame.OPENGL, depth)
+    return pygame.display.set_mode( (w,h), pygame.FULLSCREEN|pygame.OPENGL|pygame.HWSURFACE|pygame.DOUBLEBUF if fullscreen else pygame.OPENGL|pygame.HWSURFACE|pygame.DOUBLEBUF, depth)
     

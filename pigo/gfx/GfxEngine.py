@@ -301,6 +301,11 @@ class GfxEngine:
 		#glEnable(GL_LIGHTING)
 		#glDisable(GL_BLEND)
 		
+	def ClearWithColour(self,colour):
+		glClearColor(colour[0], colour[1], colour[2], 1.0)
+		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+
+		
 	def SwapBuffers(self):
 		pigo.lib.Flip()
 	
@@ -395,12 +400,7 @@ class GfxEngine:
 			glVertex3f(-2., y, z+0.01)
 			glVertex3f(2., y, z+0.01)
 			glEnd()
-			
-	def ClearWithColour(self,colour):
-		glClearColor(colour[0], colour[1], colour[2], 1.0)
-		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-		
-		
+					
 	def GenerateTextureId(self):
 		"""allocate a texture id and bind to it. Returns the id"""
 		# allocate the texture

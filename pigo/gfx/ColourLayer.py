@@ -26,6 +26,6 @@ class ColourLayer():
 	colour = property(SetColour,GetColour)
 	color = property(SetColour,GetColour)
 	
-	def Draw(self, gfx):
-		pigo.lib.ClearWithColour(self.colour)
-		
+	def Draw(self):
+		pigo.gfx.engine.ClearWithColour(self._colour)
+				

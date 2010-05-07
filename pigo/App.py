@@ -25,6 +25,7 @@ WINDOWED = 2
 
 class App:
 	fullscreen = False                      # by default app opens windowed
+	fps_counter = False						# whether to display the FPS counter onscreen
 
 	@classmethod
 	def startup(cls):
@@ -36,12 +37,33 @@ class App:
 		self.title=title
 		#self.options=options
 		
-		# setup our layer engine
-		#self.layerengine=pigo.SetLayerEngine(LayerEngine.LayerEngine())
+		self.layers=[]
+		
 		#self.textureengine=pigo.SetTextureEngine(TextureEngine.TextureEngine())
 
 		self.lastframetime=0.001
+	
+	
+	##
+	## LayerEngine
+	##
+	def AddLayer(self, layer):
+		assert layer not in self.layers, "Layer already in App layers."
+		self.layers.append(layer)
+		return layer
 		
+	def RemoveLayer(self, layer):
+		self.layers.remove(layer)
+		return layer
+		
+	def CallLayers(self, callable, args):
+		for layer in self.layers:
+			callable(layer,*args)
+	
+	def DrawLayers(self):
+		#print "layers:",self.layers
+		return [layer.Draw() for layer in self.layers]
+					
 	def Start(self):
 		"""run the app loop until exit"""
 		self.Init()
@@ -77,8 +99,8 @@ class App:
 			
 			#FIXED FRAME RATE
 			#block until the difference is made up
-			#while time.time()-t < (1.0/30)-self.lastframetime-(10.0/6000):
-			#   pass
+			while time.time()-t < (1.0/30)-self.lastframetime-(10.0/6000):
+			   pass
 			
 			#import agl
 			#vsync=1
@@ -93,6 +115,7 @@ class App:
 			self.ProcessEvents()
 			#print "mainloop schedule"
 			stackless.schedule()
+			#time.sleep(0.1)
 			
 	def Setup(self):
 		"""Overide this to setup the system. This is called after display and audio is initialised"""
@@ -108,9 +131,16 @@ class App:
 		#print "DrawFrame"
 		
 		# get the graphics engine to draw the frame
-		#pigo.layer.Draw(pigo.gfx)
+		self.DrawLayers()
+
+		if self.fps_counter:
+			self.DrawFPSCounter()
 
 		#print "Drawn"
+		
+	def DrawFPSCounter(self):
+		#ahem fonts
+		pass
 	
 	def ProcessEvents(self):
 		"""Perform default event processing for escape key and resolution keys"""
