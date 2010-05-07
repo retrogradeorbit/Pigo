@@ -109,7 +109,7 @@ class GfxEngine:
 		self.ChangeMode(self.screenmode+1)
 		
 	def ChangeMode(self,modenum):
-		print "ChangeMode: modenum=",modenum,"w=",self.modes[modenum].w,"h=",self.modes[modenum].h
+		#print "ChangeMode: modenum=",modenum,"w=",self.modes[modenum].w,"h=",self.modes[modenum].h
 		self.screenmode = modenum
 		self.ChangeResolution( self.modes[modenum].w, self.modes[modenum].h )
 		
@@ -145,9 +145,9 @@ class GfxEngine:
 		"""At the moment we assume the pixels are always square, which is probably not true.
 		TODO: somehow use the monitors aspect ratio
 		"""
-		print "begin frame",self.modes
+		#print "begin frame",self.modes
 		width, height = self.modes[self.screenmode].w,self.modes[self.screenmode].h
-		print "S",self.screenmode,"W",width,"H",height	
+		#print "S",self.screenmode,"W",width,"H",height	
 		glViewport(0,0,width-1,height-1)
 		glMatrixMode(GL_PROJECTION)
 		glEnable(GL_DEPTH_TEST)
@@ -167,11 +167,11 @@ class GfxEngine:
 		glLoadIdentity()
 
 	def SetupUniformCoordinateSystem(self,x1,x2,y1,y2):
-		print "SetupUniform(",x1,x2,y1,y2,")"
+		#print "SetupUniform(",x1,x2,y1,y2,")"
 		glOrtho( x1, x2, y2, y1, -1., 1.)
 
 	def EndFrameGL(self):
-		print "endframe"
+		pass
 		#glBindTexture(GL_TEXTURE_2D,1)
 		#glBindTexture(GL_TEXTURE_2D,2)
 		#glBindTexture(GL_TEXTURE_2D,3)
@@ -269,7 +269,7 @@ class GfxEngine:
 		
 		glColor4fv( [tint[0],tint[1],tint[2],alpha])                            #so we modulate with white.
 
-		print "texture",texture,".Bind()",texture.glid
+		#print "texture",texture,".Bind()",texture.glid
 		texture.Bind()
 		
 		glBegin(GL_QUADS)

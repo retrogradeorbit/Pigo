@@ -70,7 +70,6 @@ def Poll():
 	return None if event.type == pygame.NOEVENT else event
 
 def iskey(event,key):
-	print event.key
 	return event.key == key
 		
 def isquit(event):
