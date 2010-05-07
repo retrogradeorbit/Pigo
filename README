@@ -8,3 +8,26 @@ Pigo is Copyright (c) Crispin Wellington 2009-2010
 All Code is licensed under the terms of the GPL 3 license as stated in the file 'COPYING'.
 
 
+
+
+
+Getting Started
+===============
+
+Run from this directory:
+
+PYTHONPATH=. python examples/colour_window.py 
+
+
+
+Documentation
+=============
+
+Install Sphinx.
+
+cd docs
+make html
+
+Documents inside docs/_build/html/
+
+
