@@ -36,30 +36,38 @@ The graphics engine inside pigo has a layering subsytem. To display something on
 this layer to the layer system ``pigo.gfx.layers``::
 
 	import pigo
-	
-	class MyApp(pigo.App):
-		
-		def Init(self):
-			self.background = pigo.gfx.layers.Add( pigo.gfx.ColourLayer( colour=(1.0,1.0,1.0) ) )
-			
-	MyApp.startup()
-	
-.. warning::
 
-	Unimplemented.
+	class MyApp(pigo.App):
+		fullscreen = False
+	
+		def Init(self):
+			pigo.App.Init(self)
+			self.background = self.AddLayer( pigo.gfx.ColourLayer(colour=(0.0,1.0,1.0)) )
+		
+	MyApp.startup()
+
+This gives you a blight blue screen. The screen persists going through resolutions and switching fullscreen and back.
 	
 Adding an Object Layer
 ----------------------
 
-On top of the colour layer we want to add a 2D object layer. To this we can add sprites and other objects for the game::
+On top of the colour layer we want to add a 2D object layer. To this we can add sprites and other objects for the game. Let's
+begin by making a snowfall scene. We add snowflakes in the Initialisation::
 
 	import pigo
+	
+	NUM_FLAKES = 30
 	
 	class MyApp(pigo.App):
 	
 		def Init(self):
-			self.background = pigo.gfx.layers.Add( pigo.gfx.ColourLayer( colour=(1.0,1.0,1.0) ) )
+			self.background = pigo.gfx.layers.Add( pigo.gfx.ColourLayer( colour=(0.0,1.0,1.0) ) )
 			self.objects = pigo.gfx.layers.Add( pigo.gfx.ObjectLayer() )
+			
+			self.snowflakes = [ self.objects.Add( 
+							pigo.gfx.Sprite( file="snowflake.png", x=random.rand()*2.0-1.0, y=random.rand()*2.0-1.0  )
+												)  for num in range(NUM_FLAKES) ]
+			
 			
 	MyApp.startup()
 	
