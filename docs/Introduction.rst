@@ -114,7 +114,7 @@ Doing Things the Pigo Way
 
 Pigo runs on stackless and can use tasklets to control in game behavior. This doesn't offer a lot in very simple cases
 but in the more complex instances it dramatically reduces the complexity and therefor bugs of complex bahvoir code. Lets
-redo our snowflake application using tasklets.
+redo our snowflake application using tasklets::
 
     from pigo import App, gfx, schedule
     import random
