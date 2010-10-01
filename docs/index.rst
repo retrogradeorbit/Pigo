@@ -80,15 +80,40 @@ keypresses or move the player.
 Next, we define an alien::
 
     class Alien(Sprite):
-    
         def __init__(self,row,column):
             Sprite.__init__(self)
             
             self.LoadAnim( "alien-%s.png"%(row), (32,32) )
             self.SetFrame(0)
             
-        def walk(self):
-            pass
+
+However, unlike before we don't really want a single tasklet controlling this object's movement. If you look at the original Space Invaders
+you will notice only one alien moves at any one time. Each game step the microprocessor only had the power to update a single ship at a time.
+It would loop over the ships, on consequtive steps, moving from the top left alien to the bottom right alien in horizontal stripes.
+This algorithm naturally gives us the classic Space Invaders speed up as the alien horde gets smaller. And each time the entire wave is
+updated (be it one or fifty ships) we emit a alien advance noise, creating the Space Invaders soundscape. We implement this by having a
+class that controls the alien horde that has a stackless tasklet that processes the space invaders like the old microprocessor would have done.
+
+    class AlienController():
+        def __init__(self, aliens=[]):
+            self.aliens = aliens[:]             # this is all the aliens. We set entries to None when they are destroyed
+
+        def run(self):
+            # a generator to return ships forever. When this stops returning ships, the player destroyed them all
+            def generate():
+                while False in [X is None for X in self.aliens]:            # while some are still alive
+                    for alien in self.aliens:
+                        if alien is not None:
+                            yield alien
+                    self.sfx.play()
+
+            for alien in generate():
+                alien.move()
+                stackless.schedule()
+
+            # TODO: aliens are dead, lets advance levels
+
+
     
                 
 

@@ -1,3 +1,4 @@
+import pigo
 from unittest import TestCase, main
 from Texture import Texture
 import sys

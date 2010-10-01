@@ -132,8 +132,12 @@ class GfxEngineTest(TestCase):
         self.gfx.DrawTextureQuad(corners, id, textureextents=(0,0,1,1), tint=(1.0,1.0,1.0), alpha=1.0)
         
         self.assert_(*self.compare(self.gfx.GetScreenShot(), "texture" ,0))
-        
-    def testDrawTextureQuad(self):
+
+    def testInfo(self):
+        info = self.gfx.DebugInfo()
+        print info
+
+    def ntestDrawTextureQuad(self):
         self.gfx.OpenDisplay()
         self.gfx.SetupGL()
         self.gfx.ClearWithColour( (0,0,0) )

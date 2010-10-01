@@ -141,17 +141,17 @@ class App:
 	def DrawFPSCounter(self):
 		#ahem fonts
 		pass
-	
+
 	def ProcessEvents(self):
 		"""Perform default event processing for escape key and resolution keys"""
 		while self.HandleEvent(pigo.lib.Poll()):
 			pass
-			
-	
+
+
 	def Close(self):
 		"""Override with stuff to do on window close"""
 		pass
-	
+
 	def HandleEvent(self, event):
 		#print event
 		if not event:
